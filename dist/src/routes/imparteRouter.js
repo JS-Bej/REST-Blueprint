@@ -84,7 +84,7 @@ exports.imparteRouter.get('/asignaturas/:cod_a', (req, res) => __awaiter(void 0,
     });
 }));
 ///////////
-exports.imparteRouter.put('/profesores/:id_p/asignaturas/:cod_a/:grupo', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.imparteRouter.put('/profesores/:id_p/asignaturas/:cod_a/grupo/:grupo', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id_p = parseInt(req.params.id_p);
     const cod_a = parseInt(req.params.cod_a);
     const grupo = parseInt(req.params.grupo);

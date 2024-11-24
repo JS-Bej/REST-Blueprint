@@ -36,6 +36,7 @@ const getAll = (callback) => {
                 id_p: row.id_p,
                 cod_a: row.cod_a,
                 grupo: row.grupo,
+                grupoActual: row.grupoActual,
                 horario: row.horario
             };
             imparten.push(imparte);
@@ -51,28 +52,33 @@ exports.getAll = getAll;
 /////////////getbyid de profesor
 const getById = (id_p, callback) => {
     const queryString = 'SELECT * FROM imparten WHERE id_p = ?';
-    db_1.db.query(queryString, (err, result) => {
+    db_1.db.query(queryString, [id_p], (err, result) => {
         if (err) {
-            callback(err);
+            return callback({
+                statusCode: 500,
+                message: 'Error al realizar la consulta',
+                error: err
+            });
         }
-        const row = result[0];
-        if (row) {
-            const imparte = {
+        const rows = result;
+        if (rows.length > 0) {
+            const registros = rows.map(row => ({
                 id_p: row.id_p,
                 cod_a: row.cod_a,
                 grupo: row.grupo,
+                grupoActual: row.grupoActual,
                 horario: row.horario
-            };
+            }));
             callback(null, {
                 statusCode: 200,
                 message: 'Registros obtenidos exitosamente',
-                data: imparte
+                data: registros
             });
         }
         else {
             callback(null, {
                 statusCode: 404,
-                message: 'Registros no encontrados'
+                message: 'No se encontraron registros'
             });
         }
     });
@@ -83,26 +89,31 @@ const getById1 = (cod_a, callback) => {
     const queryString = 'SELECT * FROM imparten WHERE cod_a = ?';
     db_1.db.query(queryString, [cod_a], (err, result) => {
         if (err) {
-            callback(err);
+            return callback({
+                statusCode: 500,
+                message: 'Error al realizar la consulta',
+                error: err
+            });
         }
-        const row = result[0];
-        if (row) {
-            const imparte = {
+        const rows = result;
+        if (rows.length > 0) {
+            const registros = rows.map(row => ({
                 cod_a: row.cod_a,
                 id_p: row.id_p,
                 grupo: row.grupo,
+                grupoActual: row.grupoActual,
                 horario: row.horario
-            };
+            }));
             callback(null, {
                 statusCode: 200,
                 message: 'Registros obtenidos exitosamente',
-                data: imparte
+                data: registros
             });
         }
         else {
             callback(null, {
                 statusCode: 404,
-                message: 'Registros no encontrados'
+                message: 'No se encontraron registros'
             });
         }
     });
@@ -110,8 +121,8 @@ const getById1 = (cod_a, callback) => {
 exports.getById1 = getById1;
 ///////////
 const update = (imparte, callback) => {
-    const queryString = 'UPDATE imparten SET horario = ? WHERE id_p = ?, cod_a = ?, grupo= ?';
-    db_1.db.query(queryString, [imparte.id_p, imparte.cod_a, imparte.grupo, imparte.horario], (err) => {
+    const queryString = 'UPDATE imparten SET grupo= ?, horario =?   WHERE id_p = ? AND cod_a = ? AND grupo= ?';
+    db_1.db.query(queryString, [imparte.grupoActual, imparte.horario, imparte.id_p, imparte.cod_a, imparte.grupo], (err) => {
         if (err) {
             callback(err);
         }
@@ -121,7 +132,7 @@ const update = (imparte, callback) => {
             data: {
                 id_p: imparte.id_p,
                 cod_a: imparte.cod_a,
-                grupo: imparte.grupo,
+                grupo: imparte.grupoActual,
                 horario: imparte.horario
             }
         });
@@ -130,7 +141,7 @@ const update = (imparte, callback) => {
 exports.update = update;
 ////////////
 const remove = (id_p, cod_a, grupo, callback) => {
-    const queryString = 'DELETE FROM imparten WHERE id_p = ?, cod_a = ?, grupo = ?';
+    const queryString = 'DELETE FROM imparten WHERE id_p = ? AND cod_a = ? AND grupo = ?';
     db_1.db.query(queryString, [id_p, cod_a, grupo], (err) => {
         if (err) {
             callback(err);
