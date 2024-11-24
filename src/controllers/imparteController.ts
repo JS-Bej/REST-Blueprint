@@ -20,7 +20,8 @@ export const create = (imparte: Imparte, callback: Function) => {
                 data: {
                     id_p: imparte.id_p,
                     cod_a: imparte.cod_a,
-                    grupo: imparte.grupo
+                    grupo: imparte.grupo,
+                    horario: imparte.horario
                 }
             });
         }
@@ -40,6 +41,7 @@ export const getAll = (callback: Function) => {
                 id_p: row.id_p,
                 cod_a: row.cod_a,
                 grupo: row.grupo,
+                grupoActualiz: row.grupoActualiz,
                 horario: row.horario
             };
             imparten.push(imparte);
@@ -70,6 +72,7 @@ export const getById = (id_p: number, callback: Function) => {
                 id_p: row.id_p,
                 cod_a: row.cod_a,
                 grupo: row.grupo,
+                grupoActualiz: row.grupoActualiz,
                 horario: row.horario
             }));
 
@@ -105,6 +108,7 @@ export const getById1 = (cod_a: number, callback: Function) => {
                 cod_a: row.cod_a,
                 id_p: row.id_p,
                 grupo: row.grupo,
+                grupoActualiz: row.grupoActualiz,
                 horario: row.horario
             }));
 
@@ -123,11 +127,10 @@ export const getById1 = (cod_a: number, callback: Function) => {
 };
 ///////////
 export const update = (imparte: Imparte, callback: Function) => {
-    const queryString = 'UPDATE imparten SET horario = ? WHERE id_p = ?, cod_a = ?, grupo= ?';
- 
+    const queryString = 'UPDATE imparten SET grupo= ?, horario =?   WHERE id_p = ? AND cod_a = ? AND grupo= ?';
     db.query(
         queryString,
-        [imparte.horario, imparte.id_p, imparte.cod_a, imparte.grupo],
+        [imparte.grupoActualiz, imparte.horario, imparte.id_p, imparte.cod_a, imparte.grupo],
         (err) => {
             if (err) { callback(err); }
  
@@ -137,7 +140,7 @@ export const update = (imparte: Imparte, callback: Function) => {
                 data: {
                     id_p: imparte.id_p,
                     cod_a: imparte.cod_a,
-                    grupo: imparte.grupo,
+                    grupo: imparte.grupoActualiz,
                     horario: imparte.horario
                 }
             });
@@ -146,7 +149,7 @@ export const update = (imparte: Imparte, callback: Function) => {
 };
 ////////////
 export const remove = (id_p: number, cod_a: number, grupo: number, callback: Function) => {
-    const queryString = 'DELETE FROM imparten WHERE id_p = ?, cod_a = ?, grupo = ?';
+    const queryString = 'DELETE FROM imparten WHERE id_p = ? AND cod_a = ? AND grupo = ?';
  
     db.query(queryString, [id_p,cod_a,grupo], (err) => {
         if (err) { callback(err); }

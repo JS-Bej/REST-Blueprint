@@ -54,7 +54,7 @@ imparteRouter.get('/asignaturas/:cod_a', async (req: Request, res: Response) => 
     });
 });
 ///////////
-imparteRouter.put('/profesores/:id_p/asignaturas/:cod_a/:grupo', async (req: Request, res: Response) => {
+imparteRouter.put('/profesores/:id_p/asignaturas/:cod_a/grupo/:grupo', async (req: Request, res: Response) => {
     const id_p = parseInt(req.params.id_p);
     const cod_a = parseInt(req.params.cod_a);
     const grupo = parseInt(req.params.grupo);
