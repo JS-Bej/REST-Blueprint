@@ -7,6 +7,7 @@ import { asignaturaRouter } from './src/routes/asignaturaRouter'
 import { profesorRouter } from './src/routes/profesorRouter';
 import { imparteRouter } from './src/routes/imparteRouter';
 import cors from 'cors'
+import { inscribeRouter } from './src/routes/inscribeRouter';
 
 const app = express();
 dotenv.config();
@@ -23,6 +24,8 @@ app.use('/estudiantes', estudianteRouter);
 app.use('/asignaturas', asignaturaRouter);
 app.use('/profesores', profesorRouter);
 app.use('/imparten', imparteRouter);
+app.use('/inscriben', inscribeRouter);
+
 
 db.connect((err)=>{
     if(err){

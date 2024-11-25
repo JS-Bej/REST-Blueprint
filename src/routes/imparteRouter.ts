@@ -8,7 +8,9 @@ imparteRouter.get('/', async (req: Request, res: Response) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
- 
+        if (!result || result.data.length === 0) {
+            return res.status(204).send(); 
+        }
         res.status(result.statusCode).json(result);
     });
 });
@@ -74,7 +76,7 @@ imparteRouter.put('/profesores/:id_p/asignaturas/:cod_a/grupo/:grupo', async (re
     });
 });
 ////////////
-imparteRouter.delete('/profesores/:id_p/asignaturas/:cod_a/:grupo', async (req: Request, res: Response) => {
+imparteRouter.delete('/profesores/:id_p/asignaturas/:cod_a/grupo/:grupo', async (req: Request, res: Response) => {
     const id_p = parseInt(req.params.id_p);
     const cod_a = parseInt(req.params.cod_a);
     const grupo = parseInt(req.params.grupo);

@@ -8,7 +8,9 @@ asignaturaRouter.get('/', async (req: Request, res: Response) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
- 
+        if (!result || result.data.length === 0) {
+            return res.status(204).send(); 
+        }
         res.status(result.statusCode).json(result);
     });
 });
