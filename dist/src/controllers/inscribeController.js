@@ -131,8 +131,8 @@ const getById1 = (cod_a, grupo, callback) => {
 exports.getById1 = getById1;
 ///////////
 const update = (inscribe, callback) => {
-    const queryString = 'UPDATE inscriben SET n1 = ?, n2 = ?, n3 = ?   WHERE id_p = ? AND cod_a = ? AND cod_e= ?';
-    db_1.db.query(queryString, [inscribe.id_p, inscribe.cod_a, inscribe.grupo, inscribe.cod_e, inscribe.n1, inscribe.n2, inscribe.n3], (err) => {
+    const queryString = 'UPDATE inscriben SET n1 = ?, n2 = ?, n3 = ? WHERE id_p = ? AND cod_a = ? AND grupo = ? AND cod_e= ? ';
+    db_1.db.query(queryString, [inscribe.n1, inscribe.n2, inscribe.n3, inscribe.id_p, inscribe.cod_a, inscribe.grupo, inscribe.cod_e], (err) => {
         if (err) {
             callback(err);
         }
@@ -152,7 +152,7 @@ const update = (inscribe, callback) => {
 };
 exports.update = update;
 ////////////
-const remove = (callback) => {
+const remove = (id_p, cod_a, grupo, cod_e, callback) => {
     callback(null, {
         statusCode: 403,
         message: 'La eliminación de registros no está permitida en esta tabla'
