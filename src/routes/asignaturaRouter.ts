@@ -46,7 +46,6 @@ asignaturaRouter.put('/:cod_a', async (req: Request, res: Response) => {
     /*
     ... operador de propagación (spread operator) en JavaScript y TypeScript.
     Este operador permite expandir un objeto o un array en sus elementos individuales.
-    Gracias por la explicación :)
     */
     const updatedAsignatura: Asignatura = { ...req.body, cod_a };
  

@@ -63,7 +63,6 @@ imparteRouter.put('/profesores/:id_p/asignaturas/:cod_a/grupo/:grupo', async (re
     /*
     ... operador de propagación (spread operator) en JavaScript y TypeScript.
     Este operador permite expandir un objeto o un array en sus elementos individuales.
-    Gracias por la explicación :)
     */
     const updatedImparte: Imparte = { ...req.body, id_p , cod_a , grupo};
  

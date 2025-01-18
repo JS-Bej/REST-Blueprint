@@ -11,9 +11,6 @@ export const create = (imparte: Imparte, callback: Function) => {
         (err) => {
             if (err) { callback(err); }
  
-            //const insertId = (<OkPacket>result).insertId;
-            //callback(null, insertId);
- 
             callback(null, {
                 statusCode: 201,
                 message: 'Registro creado exitosamente',
