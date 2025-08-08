@@ -1,8 +1,8 @@
 import * as dotenv from 'dotenv';
-import express, {Request, Response} from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors'
 import * as bodyParser from 'body-parser';
-import {db} from './db';
+import { db } from './db';
 import { studentRouter } from './src/routes/studentRouter'
 import { subjectRouter } from './src/routes/subjectRouter'
 import { professorRouter } from './src/routes/professorRouter';
