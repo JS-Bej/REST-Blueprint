@@ -1,13 +1,13 @@
 import * as dotenv from 'dotenv';
 import express, {Request, Response} from 'express';
+import cors from 'cors'
 import * as bodyParser from 'body-parser';
 import {db} from './db';
-import { estudianteRouter } from './src/routes/estudianteRouter'
-import { asignaturaRouter } from './src/routes/asignaturaRouter'
-import { profesorRouter } from './src/routes/profesorRouter';
-import { imparteRouter } from './src/routes/imparteRouter';
-import cors from 'cors'
-import { inscribeRouter } from './src/routes/inscribeRouter';
+import { studentRouter } from './src/routes/studentRouter'
+import { subjectRouter } from './src/routes/subjectRouter'
+import { professorRouter } from './src/routes/professorRouter';
+import { teachRouter } from './src/routes/teachRouter';
+import { registerRouter } from './src/routes/registerRouter';
 
 const app = express();
 dotenv.config();
@@ -20,11 +20,11 @@ app.get('/', (req,res)=> {
     res.status(200).send('Welcome!');
 });
 
-app.use('/estudiantes', estudianteRouter);
-app.use('/asignaturas', asignaturaRouter);
-app.use('/profesores', profesorRouter);
-app.use('/imparten', imparteRouter);
-app.use('/inscriben', inscribeRouter);
+app.use('/students', studentRouter);
+app.use('/subjects', subjectRouter);
+app.use('/professors', professorRouter);
+app.use('/teaches', teachRouter);
+app.use('/registers', registerRouter);
 
 
 db.connect((err)=>{
