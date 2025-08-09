@@ -35,12 +35,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.inscribeRouter = void 0;
+exports.professorRouter = void 0;
 const express_1 = __importDefault(require("express"));
-const inscribeController = __importStar(require("../controllers/inscribeController"));
-exports.inscribeRouter = express_1.default.Router();
-exports.inscribeRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    inscribeController.getAll((err, result) => {
+const professorController = __importStar(require("../controllers/professorController"));
+exports.professorRouter = express_1.default.Router();
+// Getting professors:
+exports.professorRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    professorController.getAll((err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
@@ -50,71 +51,48 @@ exports.inscribeRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, 
         res.status(result.statusCode).json(result);
     });
 }));
-////////////
-exports.inscribeRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const newInscribe = req.body;
-    inscribeController.create(newInscribe, (err, result) => {
+// Creating professors:
+exports.professorRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const newProfessor = req.body;
+    professorController.create(newProfessor, (err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
         res.status(result.statusCode).json(result);
     });
 }));
-////////////asignaturas y notas por estudiante:
-exports.inscribeRouter.get('/estudiantes/:cod_e', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const cod_e = parseInt(req.params.cod_e);
-    inscribeController.getById(cod_e, (err, result) => {
+// Getting professors by Id:
+exports.professorRouter.get('/:id_p', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id_p = parseInt(req.params.id_p);
+    professorController.getById(id_p, (err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
         if (!result) {
-            return res.status(404).json({ 'message': 'Registro no encontrado' });
+            return res.status(404).json({ 'message': 'Professor not found' });
         }
         res.status(result.statusCode).json(result);
     });
 }));
-////////////estudiantes y notas por asignatura y grupo:
-exports.inscribeRouter.get('/asignaturas/:cod_a/grupo/:grupo', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const cod_a = parseInt(req.params.cod_a);
-    const grupo = parseInt(req.params.grupo);
-    inscribeController.getById1(cod_a, grupo, (err, result) => {
-        if (err) {
-            return res.status(500).json({ 'message': err.message });
-        }
-        if (!result) {
-            return res.status(404).json({ 'message': 'Registro no encontrado' });
-        }
-        res.status(result.statusCode).json(result);
-    });
-}));
-///////////
-exports.inscribeRouter.put('/profesores/:id_p/asignaturas/:cod_a/grupo/:grupo/estudiantes/:cod_e', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Updating professors:
+exports.professorRouter.put('/:id_p', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id_p = parseInt(req.params.id_p);
-    const cod_a = parseInt(req.params.cod_a);
-    const grupo = parseInt(req.params.grupo);
-    const cod_e = parseInt(req.params.cod_e);
-    /*
-    ... operador de propagación (spread operator) en JavaScript y TypeScript.
-    Este operador permite expandir un objeto o un array en sus elementos individuales.
-    Gracias por la explicación :)
-    */
-    const updatedInscribe = Object.assign(Object.assign({}, req.body), { id_p, cod_a, grupo, cod_e });
-    inscribeController.update(updatedInscribe, (err, result) => {
+    const updatedProfessor = Object.assign(Object.assign({}, req.body), { id_p });
+    /*  Spread operator (...)
+        this operator lets us expand an object or array in its individual elements. */
+    professorController.update(updatedProfessor, (err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
         res.status(result.statusCode).json(result);
     });
 }));
-////////////
-exports.inscribeRouter.delete('/profesores/:id_p/asignaturas/:cod_a/grupo/:grupo/estudiantes/:cod_e', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Removing professors:
+exports.professorRouter.delete('/:id_p', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id_p = parseInt(req.params.id_p);
-    const cod_a = parseInt(req.params.cod_a);
-    const cod_e = parseInt(req.params.cod_e);
-    const grupo = parseInt(req.params.grupo);
-    inscribeController.remove(id_p, cod_a, cod_e, grupo, (err, result) => {
+    professorController.remove(id_p, (err, result) => {
         if (err) {
-            return res.status(500).json({ message: err.message });
+            return res.status(500).json({ 'message': err.message });
         }
         res.status(result.statusCode).json(result);
     });

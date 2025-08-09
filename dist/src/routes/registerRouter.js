@@ -35,13 +35,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.asignaturaRouter = void 0;
+exports.registerRouter = void 0;
 const express_1 = __importDefault(require("express"));
-const asignaturaController = __importStar(require("../controllers/asignaturaController"));
-exports.asignaturaRouter = express_1.default.Router();
-//////////////////////////////////////////////////////////////////////////////
-exports.asignaturaRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    asignaturaController.getAll((err, result) => {
+const registerController = __importStar(require("../controllers/registerController"));
+exports.registerRouter = express_1.default.Router();
+// Getting records:
+exports.registerRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    registerController.getAll((err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
@@ -51,51 +51,68 @@ exports.asignaturaRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0
         res.status(result.statusCode).json(result);
     });
 }));
-////////////
-exports.asignaturaRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const newAsignatura = req.body;
-    asignaturaController.create(newAsignatura, (err, result) => {
+// Creating records:
+exports.registerRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const newregister = req.body;
+    registerController.create(newregister, (err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
         res.status(result.statusCode).json(result);
     });
 }));
-////////////
-exports.asignaturaRouter.get('/:cod_a', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const cod_a = parseInt(req.params.cod_a);
-    asignaturaController.getById(cod_a, (err, result) => {
+// Getting records by students Id:
+exports.registerRouter.get('/students/:id_st', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id_st = parseInt(req.params.id_st);
+    registerController.getById(id_st, (err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
         if (!result) {
-            return res.status(404).json({ 'message': 'Asignatura no encontrada' });
+            return res.status(404).json({ 'message': 'No records found' });
         }
         res.status(result.statusCode).json(result);
     });
 }));
-///////////
-exports.asignaturaRouter.put('/:cod_a', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const cod_a = parseInt(req.params.cod_a);
-    /*
-    ... operador de propagación (spread operator) en JavaScript y TypeScript.
-    Este operador permite expandir un objeto o un array en sus elementos individuales.
-    Gracias por la explicación :)
-    */
-    const updatedAsignatura = Object.assign(Object.assign({}, req.body), { cod_a });
-    asignaturaController.update(updatedAsignatura, (err, result) => {
+// Getting records by subjects Id and groups:
+exports.registerRouter.get('/subjects/:id_s/group/:group', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id_s = parseInt(req.params.id_s);
+    const group = parseInt(req.params.group);
+    registerController.getById1(id_s, group, (err, result) => {
+        if (err) {
+            return res.status(500).json({ 'message': err.message });
+        }
+        if (!result) {
+            return res.status(404).json({ 'message': 'No records found' });
+        }
+        res.status(result.statusCode).json(result);
+    });
+}));
+// Updating records by professors, subjects and students Id, and groups:
+exports.registerRouter.put('/professors/:id_p/subjects/:id_s/group/:group/students/:id_st', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id_p = parseInt(req.params.id_p);
+    const id_s = parseInt(req.params.id_s);
+    const group = parseInt(req.params.group);
+    const id_st = parseInt(req.params.id_st);
+    const updatedregister = Object.assign(Object.assign({}, req.body), { id_p, id_s, group, id_st });
+    /*  Spread operator (...)
+    this operator lets us expand an object or array in its individual elements. */
+    registerController.update(updatedregister, (err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
         res.status(result.statusCode).json(result);
     });
 }));
-////////////
-exports.asignaturaRouter.delete('/:cod_a', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const cod_a = parseInt(req.params.cod_a);
-    asignaturaController.remove(cod_a, (err, result) => {
+// Trying to remove records in the table without that permission:
+exports.registerRouter.delete('/professors/:id_p/subjects/:id_s/group/:group/students/:id_st', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id_p = parseInt(req.params.id_p);
+    const id_s = parseInt(req.params.id_s);
+    const id_st = parseInt(req.params.id_st);
+    const group = parseInt(req.params.group);
+    registerController.remove(id_p, id_s, id_st, group, (err, result) => {
         if (err) {
-            return res.status(500).json({ 'message': err.message });
+            return res.status(500).json({ message: err.message });
         }
         res.status(result.statusCode).json(result);
     });

@@ -35,12 +35,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.estudianteRouter = void 0;
+exports.subjectRouter = void 0;
 const express_1 = __importDefault(require("express"));
-const estudianteController = __importStar(require("../controllers/estudianteController"));
-exports.estudianteRouter = express_1.default.Router();
-exports.estudianteRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    estudianteController.getAll((err, result) => {
+const subjectController = __importStar(require("../controllers/subjectController"));
+exports.subjectRouter = express_1.default.Router();
+// Getting subjects:
+exports.subjectRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    subjectController.getAll((err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
@@ -50,49 +51,46 @@ exports.estudianteRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0
         res.status(result.statusCode).json(result);
     });
 }));
-////////////
-exports.estudianteRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const newEstudiante = req.body;
-    estudianteController.create(newEstudiante, (err, result) => {
+// Creating subjects:
+exports.subjectRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const newSubject = req.body;
+    subjectController.create(newSubject, (err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
         res.status(result.statusCode).json(result);
     });
 }));
-////////////
-exports.estudianteRouter.get('/:cod_e', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const cod_e = parseInt(req.params.cod_e);
-    estudianteController.getById(cod_e, (err, result) => {
+// Getting subjects by Id:
+exports.subjectRouter.get('/:id_s', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id_s = parseInt(req.params.id_s);
+    subjectController.getById(id_s, (err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
         if (!result) {
-            return res.status(404).json({ 'message': 'Estudiante no encontrado' });
+            return res.status(404).json({ 'message': 'Subject not found' });
         }
         res.status(result.statusCode).json(result);
     });
 }));
-///////////
-exports.estudianteRouter.put('/:cod_e', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const cod_e = parseInt(req.params.cod_e);
-    /*
-    ... operador de propagación (spread operator) en JavaScript y TypeScript.
-    Este operador permite expandir un objeto o un array en sus elementos individuales.
-    Gracias por la explicación :)
-    */
-    const updatedEstudiante = Object.assign(Object.assign({}, req.body), { cod_e });
-    estudianteController.update(updatedEstudiante, (err, result) => {
+// Updating subjects:
+exports.subjectRouter.put('/:id_s', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id_s = parseInt(req.params.id_s);
+    const updatedSubject = Object.assign(Object.assign({}, req.body), { id_s });
+    /*  Spread operator (...)
+        this operator lets us expand an object or array in its individual elements. */
+    subjectController.update(updatedSubject, (err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
         res.status(result.statusCode).json(result);
     });
 }));
-////////////
-exports.estudianteRouter.delete('/:cod_e', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const cod_e = parseInt(req.params.cod_e);
-    estudianteController.remove(cod_e, (err, result) => {
+// Removing subjects:
+exports.subjectRouter.delete('/:id_s', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id_s = parseInt(req.params.id_s);
+    subjectController.remove(id_s, (err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }

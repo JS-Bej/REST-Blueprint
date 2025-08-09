@@ -28,14 +28,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv = __importStar(require("dotenv"));
 const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
 const bodyParser = __importStar(require("body-parser"));
 const db_1 = require("./db");
-const estudianteRouter_1 = require("./src/routes/estudianteRouter");
-const asignaturaRouter_1 = require("./src/routes/asignaturaRouter");
-const profesorRouter_1 = require("./src/routes/profesorRouter");
-const imparteRouter_1 = require("./src/routes/imparteRouter");
-const cors_1 = __importDefault(require("cors"));
-const inscribeRouter_1 = require("./src/routes/inscribeRouter");
+const studentRouter_1 = require("./src/routes/studentRouter");
+const subjectRouter_1 = require("./src/routes/subjectRouter");
+const professorRouter_1 = require("./src/routes/professorRouter");
+const teachRouter_1 = require("./src/routes/teachRouter");
+const registerRouter_1 = require("./src/routes/registerRouter");
 const app = (0, express_1.default)();
 dotenv.config();
 app.use((0, cors_1.default)());
@@ -44,11 +44,11 @@ app.get('/', (req, res) => {
     res.type('text/plain');
     res.status(200).send('Welcome!');
 });
-app.use('/estudiantes', estudianteRouter_1.estudianteRouter);
-app.use('/asignaturas', asignaturaRouter_1.asignaturaRouter);
-app.use('/profesores', profesorRouter_1.profesorRouter);
-app.use('/imparten', imparteRouter_1.imparteRouter);
-app.use('/inscriben', inscribeRouter_1.inscribeRouter);
+app.use('/students', studentRouter_1.studentRouter);
+app.use('/subjects', subjectRouter_1.subjectRouter);
+app.use('/professors', professorRouter_1.professorRouter);
+app.use('/teaches', teachRouter_1.teachRouter);
+app.use('/registers', registerRouter_1.registerRouter);
 db_1.db.connect((err) => {
     if (err) {
         console.log('Database connection error');

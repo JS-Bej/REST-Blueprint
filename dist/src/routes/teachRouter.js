@@ -35,12 +35,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.imparteRouter = void 0;
+exports.teachRouter = void 0;
 const express_1 = __importDefault(require("express"));
-const imparteController = __importStar(require("../controllers/imparteController"));
-exports.imparteRouter = express_1.default.Router();
-exports.imparteRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    imparteController.getAll((err, result) => {
+const teachController = __importStar(require("../controllers/teachController"));
+exports.teachRouter = express_1.default.Router();
+// Getting records:
+exports.teachRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    teachController.getAll((err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
@@ -50,66 +51,63 @@ exports.imparteRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, f
         res.status(result.statusCode).json(result);
     });
 }));
-////////////
-exports.imparteRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const newImparte = req.body;
-    imparteController.create(newImparte, (err, result) => {
+// Creating records:
+exports.teachRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const newTeach = req.body;
+    teachController.create(newTeach, (err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
         res.status(result.statusCode).json(result);
     });
 }));
-////////////asignaturas por profesor:
-exports.imparteRouter.get('/profesores/:id_p', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Getting records by professors Id:
+exports.teachRouter.get('/professors/:id_p', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id_p = parseInt(req.params.id_p);
-    imparteController.getById(id_p, (err, result) => {
+    teachController.getById(id_p, (err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
         if (!result) {
-            return res.status(404).json({ 'message': 'Profesor no encontrado' });
+            return res.status(404).json({ 'message': 'Professor not found' });
         }
         res.status(result.statusCode).json(result);
     });
 }));
-////////////profesores por asignatura:
-exports.imparteRouter.get('/asignaturas/:cod_a', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const cod_a = parseInt(req.params.cod_a);
-    imparteController.getById1(cod_a, (err, result) => {
+// Getting records by subjects Id:
+exports.teachRouter.get('/subjects/:id_s', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id_s = parseInt(req.params.id_s);
+    teachController.getById1(id_s, (err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
         if (!result) {
-            return res.status(404).json({ 'message': 'Asignatura no encontrada' });
+            return res.status(404).json({ 'message': 'Subject not found' });
         }
         res.status(result.statusCode).json(result);
     });
 }));
-///////////
-exports.imparteRouter.put('/profesores/:id_p/asignaturas/:cod_a/grupo/:grupo', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Updating records by professor Id, subject Id and group:
+exports.teachRouter.put('/professors/:id_p/subjects/:id_s/group/:group', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id_p = parseInt(req.params.id_p);
-    const cod_a = parseInt(req.params.cod_a);
-    const grupo = parseInt(req.params.grupo);
-    /*
-    ... operador de propagación (spread operator) en JavaScript y TypeScript.
-    Este operador permite expandir un objeto o un array en sus elementos individuales.
-    Gracias por la explicación :)
-    */
-    const updatedImparte = Object.assign(Object.assign({}, req.body), { id_p, cod_a, grupo });
-    imparteController.update(updatedImparte, (err, result) => {
+    const id_s = parseInt(req.params.id_s);
+    const group = parseInt(req.params.group);
+    const updatedTeach = Object.assign(Object.assign({}, req.body), { id_p, id_s, group });
+    /*  Spread operator (...)
+    this operator lets us expand an object or array in its individual elements. */
+    teachController.update(updatedTeach, (err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
         res.status(result.statusCode).json(result);
     });
 }));
-////////////
-exports.imparteRouter.delete('/profesores/:id_p/asignaturas/:cod_a/grupo/:grupo', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Removing records by professor Id, subject Id and group:
+exports.teachRouter.delete('/professors/:id_p/subjects/:id_s/group/:group', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id_p = parseInt(req.params.id_p);
-    const cod_a = parseInt(req.params.cod_a);
-    const grupo = parseInt(req.params.grupo);
-    imparteController.remove(id_p, cod_a, grupo, (err, result) => {
+    const id_s = parseInt(req.params.id_s);
+    const group = parseInt(req.params.group);
+    teachController.remove(id_p, id_s, group, (err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }

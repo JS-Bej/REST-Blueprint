@@ -35,12 +35,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.profesorRouter = void 0;
+exports.studentRouter = void 0;
 const express_1 = __importDefault(require("express"));
-const profesorController = __importStar(require("../controllers/profesorController"));
-exports.profesorRouter = express_1.default.Router();
-exports.profesorRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    profesorController.getAll((err, result) => {
+const studentController = __importStar(require("../controllers/studentController"));
+exports.studentRouter = express_1.default.Router();
+// Getting students:
+exports.studentRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    studentController.getAll((err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
@@ -50,49 +51,46 @@ exports.profesorRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, 
         res.status(result.statusCode).json(result);
     });
 }));
-////////////
-exports.profesorRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const newProfesor = req.body;
-    profesorController.create(newProfesor, (err, result) => {
+// Creating students:
+exports.studentRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const newStudent = req.body;
+    studentController.create(newStudent, (err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
         res.status(result.statusCode).json(result);
     });
 }));
-////////////
-exports.profesorRouter.get('/:id_p', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id_p = parseInt(req.params.id_p);
-    profesorController.getById(id_p, (err, result) => {
+// Getting students by Id:
+exports.studentRouter.get('/:id_st', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id_st = parseInt(req.params.id_st);
+    studentController.getById(id_st, (err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
         if (!result) {
-            return res.status(404).json({ 'message': 'Profesor no encontrado' });
+            return res.status(404).json({ 'message': 'Student no encontrado' });
         }
         res.status(result.statusCode).json(result);
     });
 }));
-///////////
-exports.profesorRouter.put('/:id_p', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id_p = parseInt(req.params.id_p);
-    /*
-    ... operador de propagación (spread operator) en JavaScript y TypeScript.
-    Este operador permite expandir un objeto o un array en sus elementos individuales.
-    Gracias por la explicación :)
-    */
-    const updatedProfesor = Object.assign(Object.assign({}, req.body), { id_p });
-    profesorController.update(updatedProfesor, (err, result) => {
+// Updating students:
+exports.studentRouter.put('/:id_st', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id_st = parseInt(req.params.id_st);
+    const updatedStudent = Object.assign(Object.assign({}, req.body), { id_st });
+    /*  Spread operator (...)
+        this operator lets us expand an object or array in its individual elements. */
+    studentController.update(updatedStudent, (err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
         res.status(result.statusCode).json(result);
     });
 }));
-////////////
-exports.profesorRouter.delete('/:id_p', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id_p = parseInt(req.params.id_p);
-    profesorController.remove(id_p, (err, result) => {
+// Removing students:
+exports.studentRouter.delete('/:id_st', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id_st = parseInt(req.params.id_st);
+    studentController.remove(id_st, (err, result) => {
         if (err) {
             return res.status(500).json({ 'message': err.message });
         }
